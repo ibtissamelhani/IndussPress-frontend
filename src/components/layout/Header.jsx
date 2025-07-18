@@ -15,6 +15,7 @@ const Header = () => {
           </div>
           <nav className="hidden md:flex items-center justify-center space-x-8">
             <Link to="/" className="text-gray-700 hover:text-primary-600 text-sm font-medium">Home</Link>
+            <Link to="/register" className="text-gray-700 hover:text-primary-600 text-sm font-medium">register</Link>
             <Link to="/login" className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm">Login</Link>
           </nav>
           <div className="md:hidden">
@@ -27,7 +28,8 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden border-t py-4 space-y-2">
             <Link to="/" onClick={toggleMenu} className="block text-gray-700 px-3 py-2 text-base">Home</Link>
-            <Link to="/login" onClick={toggleMenu} className="block bg-blue-600 text-white px-3 py-2 rounded-md">Login</Link>
+            <Link to="/" onClick={toggleMenu} className="block text-gray-700 px-3 py-2 text-base">register</Link>
+            <Link to="/register" onClick={toggleMenu} className="block bg-blue-600 text-white px-3 py-2 rounded-md">Login</Link>
           </div>
         )}
       </div>
