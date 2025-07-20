@@ -151,7 +151,7 @@ const ArticleDetails = () => {
             Impossible de charger l'article. Il a peut-être été supprimé ou vous n'avez pas l'autorisation de le consulter.
           </p>
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/dashboard/articles')}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
           >
             Retour aux articles
@@ -170,7 +170,7 @@ const ArticleDetails = () => {
       {/* Breadcrumb Navigation */}
       <div className="flex items-center space-x-2 text-sm">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/dashboard/articles')}
           className="flex items-center text-gray-500 hover:text-gray-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
@@ -205,30 +205,7 @@ const ArticleDetails = () => {
             
             {/* Action Buttons */}
             <div className="flex items-center space-x-2 ml-4">
-              {/* REDACTEUR Actions */}
-              {userRole === 'REDACTEUR' && canEdit && (
-                <>
-                  <button
-                    onClick={handleEdit}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <Edit className="h-4 w-4 mr-2" />
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => setShowDeleteConfirm(true)}
-                    disabled={isDeleting}
-                    className="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
-                  >
-                    {isDeleting ? (
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    ) : (
-                      <Trash2 className="h-4 w-4 mr-2" />
-                    )}
-                    Supprimer
-                  </button>
-                </>
-              )}
+             
 
               {/* EDITEUR Actions */}
               {userRole === 'EDITEUR' && (
