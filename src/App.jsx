@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import LandingPage from './pages/LandingPage.jsx'
 import './index.css'
 import './App.css'
 import LoginPage from './pages/auth/LoginPage.jsx'
@@ -9,6 +8,8 @@ import Dashboard from './pages/dashboard/Dashboard.jsx'
 import ArticleForm from './components/dashboard/ArticleForm.jsx'
 import DashboardLayout from './components/dashboard/DashboardLayout.jsx'
 import ArticleDetails from './components/dashboard/ArticleDetails.jsx'
+import LandingPage from './pages/public/LandingPage.jsx'
+import ArticleDetailsPage from './pages/public/ArticleDetailsPage.jsx'
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/article/:id" element={<ArticleDetailsPage />} />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
        

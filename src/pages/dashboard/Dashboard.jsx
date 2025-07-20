@@ -30,8 +30,7 @@ const Dashboard = () => {
   };
 
   const handleFormSubmit = (formData) => {
-    // Form submission is handled in ArticleForm component
-    // After successful submission, return to list view
+   
     setCurrentView('list');
     setEditingArticle(null);
   };
@@ -57,23 +56,7 @@ const Dashboard = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center space-x-4 flex-1">
-                  {/* Search */}
-                  <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      type="text"
-                      placeholder="Rechercher des articles..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                    />
-                  </div>
-
-                  {/* Filter */}
-                  <button className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtrer
-                  </button>
+                 
                 </div>
 
                 <div className="flex items-center space-x-2">
