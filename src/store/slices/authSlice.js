@@ -19,7 +19,6 @@ const decodeToken = (token) => {
   }
 };
 
-// Check if token is expired
 const isTokenExpired = (token) => {
   if (!token) return true;
   const decoded = decodeToken(token);
@@ -27,7 +26,6 @@ const isTokenExpired = (token) => {
   return Date.now() >= decoded.exp * 1000;
 };
 
-// Get initial state from localStorage
 const getInitialState = () => {
   const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
@@ -42,7 +40,6 @@ const getInitialState = () => {
     };
   }
   
-  // Clear invalid/expired data
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   
@@ -80,7 +77,6 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       
-      // Clear localStorage
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     },
@@ -110,7 +106,6 @@ const authSlice = createSlice({
             state.user = user;
             state.isAuthenticated = true;
             
-            // Store in localStorage
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
           }

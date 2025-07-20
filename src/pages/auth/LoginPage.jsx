@@ -30,7 +30,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (isAuthenticated && userRole) {
       const from = location.state?.from?.pathname || 
-        (userRole === 'REDACTEUR' ? '/dashboard/redacteur' : '/dashboard/editeur');
+        (userRole === 'REDACTEUR' ? '/dashboard' : '/dashboard');
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, userRole, navigate, location.state]);
@@ -91,7 +91,6 @@ const LoginPage = () => {
       await login(formData).unwrap();
       // Navigation will be handled by useEffect
     } catch (error) {
-      // Error is handled by RTK Query and stored in state
       console.error('Login failed:', error);
     }
   };
