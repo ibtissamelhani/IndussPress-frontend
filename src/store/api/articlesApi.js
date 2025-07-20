@@ -70,21 +70,11 @@ export const articlesApi = createApi({
       invalidatesTags: ['Article'],
     }),
     
-    // Publish article (Editeur only)
-    publishArticle: builder.mutation({
-      query: (id) => ({
-        url: `/articles/${id}/publish`,
-        method: 'PATCH',
-      }),
-      invalidatesTags: (result, error, id) => [{ type: 'Article', id }, 'Article'],
-    }),
-    
-    // Reject article (Editeur only)
-    rejectArticle: builder.mutation({
-      query: ({ id, reason }) => ({
-        url: `/articles/${id}/reject`,
-        method: 'PATCH',
-        body: { reason },
+    // Update article status (Editeur only)
+    updateArticleStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/articles/${id}/status?status=${status}`,
+        method: 'PUT',
       }),
       invalidatesTags: (result, error, { id }) => [{ type: 'Article', id }, 'Article'],
     }),
@@ -111,8 +101,7 @@ export const {
   useCreateArticleMutation,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
-  usePublishArticleMutation,
-  useRejectArticleMutation,
+  useUpdateArticleStatusMutation,
   useGetCategoriesQuery,
   useGetArticleStatsQuery,
 } = articlesApi;

@@ -19,8 +19,7 @@ import {
 import { 
   useGetArticleByIdQuery,
   useDeleteArticleMutation,
-  usePublishArticleMutation,
-  useRejectArticleMutation
+  useUpdateArticleStatusMutation
 } from '../../store/api/articlesApi';
 import { selectUser, selectUserRole } from '../../store/slices/authSlice';
 
@@ -41,8 +40,7 @@ const ArticleDetails = () => {
   } = useGetArticleByIdQuery(id);
 
   const [deleteArticle, { isLoading: isDeleting }] = useDeleteArticleMutation();
-  const [publishArticle, { isLoading: isPublishing }] = usePublishArticleMutation();
-  const [rejectArticle, { isLoading: isRejecting }] = useRejectArticleMutation();
+  const [updateArticleStatus, { isLoading: isUpdatingStatus }] = useUpdateArticleStatusMutation();
 
   // Check permissions based on role
   const canEdit = userRole === 'REDACTEUR' || 
@@ -108,7 +106,7 @@ const ArticleDetails = () => {
 
   const handlePublish = async () => {
     try {
-      await publishArticle(id).unwrap();
+      await updateArticleStatus({ id, status: 'VALIDE' }).unwrap();
       // Article will be updated automatically due to RTK Query
     } catch (error) {
       console.error('Error publishing article:', error);
@@ -119,7 +117,7 @@ const ArticleDetails = () => {
     if (!rejectReason.trim()) return;
     
     try {
-      await rejectArticle({ id, reason: rejectReason }).unwrap();
+      await updateArticleStatus({ id, status: 'REJETE' }).unwrap();
       setShowRejectModal(false);
       setRejectReason('');
       // Article will be updated automatically due to RTK Query
@@ -151,7 +149,7 @@ const ArticleDetails = () => {
             Impossible de charger l'article. Il a peut-être été supprimé ou vous n'avez pas l'autorisation de le consulter.
           </p>
           <button
-            onClick={() => navigate('/dashboard/articles')}
+            onClick={() => navigate('/dashboard')}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
           >
             Retour aux articles
@@ -170,7 +168,7 @@ const ArticleDetails = () => {
       {/* Breadcrumb Navigation */}
       <div className="flex items-center space-x-2 text-sm">
         <button
-          onClick={() => navigate('/dashboard/articles')}
+          onClick={() => navigate('/dashboard')}
           className="flex items-center text-gray-500 hover:text-gray-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
@@ -206,17 +204,16 @@ const ArticleDetails = () => {
             {/* Action Buttons */}
             <div className="flex items-center space-x-2 ml-4">
              
-
               {/* EDITEUR Actions */}
               {userRole === 'EDITEUR' && (
                 <>
                   {canPublish && (
                     <button
                       onClick={handlePublish}
-                      disabled={isPublishing}
+                      disabled={isUpdatingStatus}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
                     >
-                      {isPublishing ? (
+                      {isUpdatingStatus ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       ) : (
                         <Check className="h-4 w-4 mr-2" />
@@ -227,7 +224,7 @@ const ArticleDetails = () => {
                   {canReject && (
                     <button
                       onClick={() => setShowRejectModal(true)}
-                      disabled={isRejecting}
+                      disabled={isUpdatingStatus}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
                     >
                       <X className="h-4 w-4 mr-2" />
@@ -353,10 +350,10 @@ const ArticleDetails = () => {
               </button>
               <button
                 onClick={handleReject}
-                disabled={isRejecting || !rejectReason.trim()}
+                disabled={isUpdatingStatus || !rejectReason.trim()}
                 className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50"
               >
-                {isRejecting ? 'Rejet...' : 'Rejeter l\'article'}
+                {isUpdatingStatus ? 'Rejet...' : 'Rejeter l\'article'}
               </button>
             </div>
           </div>
