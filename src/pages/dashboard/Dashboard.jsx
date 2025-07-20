@@ -4,7 +4,6 @@ import { Plus, Filter, Search, Grid, List } from 'lucide-react';
 import { selectUser, selectUserRole } from '../../store/slices/authSlice';
 import ArticlesList from '../../components/dashboard/ArticlesList';
 import ArticleForm from '../../components/dashboard/ArticleForm';
-import StatisticsPanel from '../../components/dashboard/StatisticsPanel';
 import DashboardLayout from '../../components/dashboard/DashboardLayout';
 
 const Dashboard = () => {
@@ -52,12 +51,7 @@ const Dashboard = () => {
       default:
         return (
           <>
-            {/* Statistics Panel for Editeur */}
-            {userRole === 'EDITEUR' && (
-              <div className="mb-8">
-                <StatisticsPanel />
-              </div>
-            )}
+            
 
             {/* Toolbar */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
@@ -126,7 +120,6 @@ const Dashboard = () => {
   };
 
   return (
-    <DashboardLayout >
       <div className="space-y-6">
         {/* Page Header */}
         <div className="flex items-center justify-between">
@@ -157,7 +150,6 @@ const Dashboard = () => {
         {/* Content */}
         {renderContent()}
       </div>
-    </DashboardLayout>
   );
 };
 

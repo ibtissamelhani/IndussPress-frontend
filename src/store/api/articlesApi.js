@@ -23,6 +23,12 @@ export const articlesApi = createApi({
       providesTags: ['Article'],
     }),
     
+    // Get current user's articles (for Redacteur)
+    getMyArticles: builder.query({
+      query: ({ page = 0, size = 10 }) => `/articles/my-articles?page=${page}&size=${size}`,
+      providesTags: ['Article'],
+    }),
+    
     // Get validated articles only (for public view)
     getValidatedArticles: builder.query({
       query: ({ page = 0, size = 10 }) => `/articles?page=${page}&size=${size}`,
@@ -64,6 +70,25 @@ export const articlesApi = createApi({
       invalidatesTags: ['Article'],
     }),
     
+    // Publish article (Editeur only)
+    publishArticle: builder.mutation({
+      query: (id) => ({
+        url: `/articles/${id}/publish`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: (result, error, id) => [{ type: 'Article', id }, 'Article'],
+    }),
+    
+    // Reject article (Editeur only)
+    rejectArticle: builder.mutation({
+      query: ({ id, reason }) => ({
+        url: `/articles/${id}/reject`,
+        method: 'PATCH',
+        body: { reason },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Article', id }, 'Article'],
+    }),
+    
     // Get categories for dropdown
     getCategories: builder.query({
       query: () => '/categories',
@@ -80,11 +105,14 @@ export const articlesApi = createApi({
 
 export const {
   useGetAllArticlesQuery,
+  useGetMyArticlesQuery,
   useGetValidatedArticlesQuery,
   useGetArticleByIdQuery,
   useCreateArticleMutation,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
+  usePublishArticleMutation,
+  useRejectArticleMutation,
   useGetCategoriesQuery,
   useGetArticleStatsQuery,
 } = articlesApi;

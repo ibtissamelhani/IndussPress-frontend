@@ -14,7 +14,6 @@ const ArticleForm = ({ article = null, onSubmit, onCancel, userRole }) => {
     content: '',
     categoryId: '',
     coverImage: '',
-    status: 'EN_ATTENTE_VALIDATION'
   });
 
   const [errors, setErrors] = useState({});
@@ -23,8 +22,8 @@ const ArticleForm = ({ article = null, onSubmit, onCancel, userRole }) => {
   // RTK Query hooks
   const [createArticle, { isLoading: isCreating }] = useCreateArticleMutation();
   const [updateArticle, { isLoading: isUpdating }] = useUpdateArticleMutation();
-  const { data: categories = [], isLoading: categoriesLoading } = useGetCategoriesQuery();
-
+const { data, isLoading: categoriesLoading } = useGetCategoriesQuery();
+const categories = data?.content || [];
   const isSubmitting = isCreating || isUpdating;
 
   // Initialize form with article data if editing
@@ -35,21 +34,10 @@ const ArticleForm = ({ article = null, onSubmit, onCancel, userRole }) => {
         content: article.content || '',
         categoryId: article.categoryId || '',
         coverImage: article.coverImage || '',
-        status: article.status || 'EN_ATTENTE_VALIDATION'
       });
     }
   }, [article]);
 
-  // Status options based on role
-  const statusOptions = [
-    { value: 'EN_ATTENTE_VALIDATION', label: 'En attente de validation' },
-    { value: 'VALIDE', label: 'Validé' },
-    { value: 'REJETE', label: 'Rejeté' }
-  ];
-
-  const filteredStatusOptions = userRole === 'REDACTEUR' 
-    ? statusOptions.filter(option => option.value === 'EN_ATTENTE_VALIDATION')
-    : statusOptions;
 
   const validateForm = () => {
     const newErrors = {};
@@ -69,10 +57,7 @@ const ArticleForm = ({ article = null, onSubmit, onCancel, userRole }) => {
     if (!formData.categoryId) {
       newErrors.categoryId = 'La catégorie est obligatoire';
     }
-    
-    if (!formData.status) {
-      newErrors.status = 'Le statut est obligatoire';
-    }
+ 
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -230,39 +215,7 @@ const ArticleForm = ({ article = null, onSubmit, onCancel, userRole }) => {
               )}
             </div>
 
-            {/* Status */}
-            <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
-                Statut <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                disabled={userRole === 'REDACTEUR'}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                  errors.status ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                } ${userRole === 'REDACTEUR' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
-              >
-                {filteredStatusOptions.map((status) => (
-                  <option key={status.value} value={status.value}>
-                    {status.label}
-                  </option>
-                ))}
-              </select>
-              {errors.status && (
-                <div className="mt-1 flex items-center text-sm text-red-600">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  {errors.status}
-                </div>
-              )}
-              {userRole === 'REDACTEUR' && (
-                <p className="mt-1 text-sm text-gray-500">
-                  Les nouveaux articles sont automatiquement en attente de validation
-                </p>
-              )}
-            </div>
+          
           </div>
 
           {/* Cover Image */}

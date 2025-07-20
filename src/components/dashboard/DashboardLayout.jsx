@@ -50,7 +50,7 @@ const handleLogout = () => {
         id: 'create',
         name: 'Create Article',
         icon: PlusCircle,
-        path: '/dashboard/create-article'
+        path: '/dashboard/create'
       }
     ];
 
@@ -90,7 +90,7 @@ const handleLogout = () => {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
             <FileText className="h-5 w-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">News CMS</h1>
+          <h1 className="text-xl font-bold text-gray-900">IndussPress</h1>
         </div>
         <button
           onClick={() => setSidebarOpen(false)}
@@ -209,22 +209,7 @@ const handleLogout = () => {
 
               {/* Right side */}
               <div className="flex items-center space-x-4">
-                <div className="hidden md:block">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      type="text"
-                      placeholder="Search articles..."
-                      className="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-sm"
-                    />
-                  </div>
-                </div>
-
-                <button className="relative p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
-                </button>
-
+        
                 <div className="flex items-center space-x-3">
                   <div className="hidden sm:block text-right">
                     <p className="text-sm font-medium text-gray-900">
