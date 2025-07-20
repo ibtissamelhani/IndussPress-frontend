@@ -40,12 +40,7 @@ const handleLogout = () => {
         path: '/dashboard',
         exact: true
       },
-      {
-        id: 'articles',
-        name: 'Articles',
-        icon: FileText,
-        path: '/dashboard/articles'
-      },
+     
       {
         id: 'create',
         name: 'Create Article',
@@ -54,15 +49,7 @@ const handleLogout = () => {
       }
     ];
 
-    // Add Statistics for Editeur only
-    if (userRole === 'EDITEUR') {
-      baseItems.push({
-        id: 'statistics',
-        name: 'Statistics',
-        icon: BarChart3,
-        path: '/dashboard/statistics'
-      });
-    }
+  
 
     return baseItems;
   };

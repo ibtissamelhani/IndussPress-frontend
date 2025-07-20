@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { 
   Edit, 
   Trash2, 
@@ -7,22 +9,25 @@ import {
   User, 
   ChevronLeft, 
   ChevronRight,
-  MoreHorizontal,
   AlertTriangle,
-  Loader2
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import { 
   useGetAllArticlesQuery, 
-  useGetValidatedArticlesQuery,
+  useGetMyArticlesQuery,
   useDeleteArticleMutation 
 } from '../../store/api/articlesApi';
+import { selectUser, selectUserRole } from '../../store/slices/authSlice';
 
-const ArticleCard = ({ article, userRole, onEdit, onDelete, viewMode }) => {
+const ArticleCard = ({ article, userRole, onEdit, onDelete, onViewDetails, viewMode }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteArticle, { isLoading: isDeleting }] = useDeleteArticleMutation();
+  const user = useSelector(selectUser);
 
-  const canEdit = userRole === 'EDITEUR' || 
-    (userRole === 'REDACTEUR' && article.authorId === 'currentUserId'); // Replace with actual user ID check
+  // Check if current user can edit/delete this article
+  const canEdit = userRole === 'REDACTEUR' || 
+    (userRole === 'EDITEUR' && article.authorId === user?.id);
 
   const canDelete = canEdit;
 
@@ -108,10 +113,20 @@ const ArticleCard = ({ article, userRole, onEdit, onDelete, viewMode }) => {
           
           {/* Actions */}
           <div className="flex items-center space-x-2 ml-4">
+            {/* Details Button */}
+            <button
+              onClick={() => onViewDetails(article)}
+              className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+              title="View Details"
+            >
+              <Eye className="h-4 w-4" />
+            </button>
+
             {canEdit && (
               <button
                 onClick={() => onEdit(article)}
                 className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                title="Edit Article"
               >
                 <Edit className="h-4 w-4" />
               </button>
@@ -121,6 +136,7 @@ const ArticleCard = ({ article, userRole, onEdit, onDelete, viewMode }) => {
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={isDeleting}
                 className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                title="Delete Article"
               >
                 {isDeleting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -212,33 +228,45 @@ const ArticleCard = ({ article, userRole, onEdit, onDelete, viewMode }) => {
         </div>
 
         {/* Actions */}
-        {(canEdit || canDelete) && (
-          <div className="flex justify-end space-x-2 pt-2 border-t border-gray-100">
-            {canEdit && (
-              <button
-                onClick={() => onEdit(article)}
-                className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-              >
-                <Edit className="h-3 w-3 mr-1" />
-                Modifier
-              </button>
-            )}
-            {canDelete && (
-              <button
-                onClick={() => setShowDeleteConfirm(true)}
-                disabled={isDeleting}
-                className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50"
-              >
-                {isDeleting ? (
-                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                ) : (
-                  <Trash2 className="h-3 w-3 mr-1" />
-                )}
-                Supprimer
-              </button>
-            )}
-          </div>
-        )}
+        <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+          {/* Details Button */}
+          <button
+            onClick={() => onViewDetails(article)}
+            className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+          >
+            <Eye className="h-3 w-3 mr-1" />
+            Détails
+          </button>
+
+          {/* Edit/Delete Actions */}
+          {(canEdit || canDelete) && (
+            <div className="flex space-x-2">
+              {canEdit && (
+                <button
+                  onClick={() => onEdit(article)}
+                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                >
+                  <Edit className="h-3 w-3 mr-1" />
+                  Modifier
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  disabled={isDeleting}
+                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50"
+                >
+                  {isDeleting ? (
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-3 w-3 mr-1" />
+                  )}
+                  Supprimer
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Delete Confirmation Modal */}
@@ -277,11 +305,12 @@ const ArticleCard = ({ article, userRole, onEdit, onDelete, viewMode }) => {
 };
 
 const ArticlesList = ({ searchTerm, viewMode, userRole, onEditArticle }) => {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(12);
 
-  // Choose query based on user role
-  const queryHook = userRole === 'EDITEUR' ? useGetAllArticlesQuery : useGetValidatedArticlesQuery;
+  // Choose the appropriate query based on user role
+  const queryHook = userRole === 'EDITEUR' ? useGetAllArticlesQuery : useGetMyArticlesQuery;
   
   const { 
     data: articlesResponse, 
@@ -309,6 +338,10 @@ const ArticlesList = ({ searchTerm, viewMode, userRole, onEditArticle }) => {
 
   const handleDeleteComplete = (deletedId) => {
     // Article will be removed from list automatically due to RTK Query cache invalidation
+  };
+
+  const handleViewDetails = (article) => {
+    navigate(`/dashboard/articles/${article.id}`);
   };
 
   if (isLoading) {
@@ -393,6 +426,7 @@ const ArticlesList = ({ searchTerm, viewMode, userRole, onEditArticle }) => {
               userRole={userRole}
               onEdit={onEditArticle}
               onDelete={handleDeleteComplete}
+              onViewDetails={handleViewDetails}
               viewMode={viewMode}
             />
           ))}
@@ -406,6 +440,7 @@ const ArticlesList = ({ searchTerm, viewMode, userRole, onEditArticle }) => {
               userRole={userRole}
               onEdit={onEditArticle}
               onDelete={handleDeleteComplete}
+              onViewDetails={handleViewDetails}
               viewMode={viewMode}
             />
           ))}
