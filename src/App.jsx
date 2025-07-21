@@ -10,6 +10,7 @@ import DashboardLayout from './components/dashboard/DashboardLayout.jsx'
 import ArticleDetails from './components/dashboard/ArticleDetails.jsx'
 import LandingPage from './pages/public/LandingPage.jsx'
 import ArticleDetailsPage from './pages/public/ArticleDetailsPage.jsx'
+import ProtectedRoute from './guards/ProtectedRoute.jsx'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route
             path="/dashboard/*"
             element={
+              <ProtectedRoute>
              
                 <DashboardLayout>
                   <Routes>
@@ -34,6 +36,7 @@ function App() {
                     <Route path="articles/:id" element={<ArticleDetails />} />
                  </Routes>
                 </DashboardLayout>
+              </ProtectedRoute>
             }
           />
       </Routes>
