@@ -1,12 +1,28 @@
-# React + Vite
+# 📰 Article Publishing Platform – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the Article Publishing Platform built with **React.js**, **Redux Toolkit**, and **React Router**. It connects to a Spring Boot backend and provides an elegant interface for browsing, publishing, and managing articles.
 
-Currently, two official plugins are available:
+## 🎯 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 💡 Dynamic landing page with article filters (category, author, date, status)
+- 🔐 Authentication system (login/register with JWT)
+- 🧑‍💼 Role-based dashboard (User, Editor, Admin)
+- ✍️ Article creation, editing & detail view
+- 🗂️ Dashboard layout with routing and protected pages
+- 🎨 Responsive & modern UI
+- 🛡️ Route guards to protect authenticated pages
+- ⚛️ Redux Toolkit for state management
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- React 18+
+- Redux Toolkit
+- React Router v6+
+- Axios
+- Tailwind CSS
+- Shadcn/ui (optional for modern components)
+- Vite / CRA
+
+---
