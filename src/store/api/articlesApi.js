@@ -85,9 +85,13 @@ export const articlesApi = createApi({
       providesTags: ['Category'],
     }),
     
-    // Get article statistics
-    getArticleStats: builder.query({
-      query: () => '/articles/stats',
+     // Filter articles with dynamic criteria
+    filterArticles: builder.query({
+      query: ({ filters = {}, page = 0, size = 6 }) => ({
+        url: `/articles/filter?page=${page}&size=${size}`,
+        method: 'POST',
+        body: filters,
+      }),
       providesTags: ['Article'],
     }),
   }),
@@ -103,5 +107,6 @@ export const {
   useDeleteArticleMutation,
   useUpdateArticleStatusMutation,
   useGetCategoriesQuery,
+  useFilterArticlesQuery,
   useGetArticleStatsQuery,
 } = articlesApi;
