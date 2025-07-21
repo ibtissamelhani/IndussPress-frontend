@@ -1,34 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import './index.css'
 import './App.css'
+import LoginPage from './pages/auth/LoginPage.jsx'
+import RegisterPage from './pages/auth/RegisterPage.jsx'
+import Dashboard from './pages/dashboard/Dashboard.jsx'
+import ArticleForm from './components/dashboard/ArticleForm.jsx'
+import DashboardLayout from './components/dashboard/DashboardLayout.jsx'
+import ArticleDetails from './components/dashboard/ArticleDetails.jsx'
+import LandingPage from './pages/public/LandingPage.jsx'
+import ArticleDetailsPage from './pages/public/ArticleDetailsPage.jsx'
+import ProtectedRoute from './guards/ProtectedRoute.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/article/:id" element={<ArticleDetailsPage />} />
+
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+       
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+             
+                <DashboardLayout>
+                  <Routes>
+                    {/* Dashboard Home */}
+                    <Route index element={<Dashboard />} />
+                    <Route path="create" element={<ArticleForm />} />
+                    <Route path="articles/:id" element={<ArticleDetails />} />
+                 </Routes>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+      </Routes>
+    </Router>
   )
 }
 
