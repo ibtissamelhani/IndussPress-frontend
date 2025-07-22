@@ -98,8 +98,8 @@ const LoginPage = () => {
   return (
     <>
     <Header/>
-    <div className="min-h-screen flex items-center justify-center bg-gray-50  px-4 sm:px-6 lg:px-8 border border-red-200">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50  px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 border border-gray-200 bg-white p-8 rounded-lg shadow-md">
         <div className="text-center">
           <h2 className="mt-3 text-3xl font-extrabold text-gray-900">
             Sign in to your account
@@ -164,13 +164,7 @@ const LoginPage = () => {
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? (
-                    <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-500" />
-                  )}
                 </button>
               </div>
               {errors.password && (

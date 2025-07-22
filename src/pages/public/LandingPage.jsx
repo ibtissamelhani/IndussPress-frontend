@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, User, ChevronLeft, ChevronRight, Eye, Loader2 } from 'lucide-react';
-import { 
-  useGetValidatedArticlesQuery, 
-  useGetCategoriesQuery 
+import {
+  useGetValidatedArticlesQuery,
+  useGetCategoriesQuery
 } from '../../store/api/articlesApi';
 import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/footer';
@@ -21,18 +21,18 @@ const LandingPage = () => {
   const pageSize = 6;
 
   // Fetch validated articles and categories
-  const { 
-    data: articlesResponse, 
-    isLoading: articlesLoading, 
-    error: articlesError 
-  } = useGetValidatedArticlesQuery({ 
-    page: currentPage, 
-    size: pageSize 
+  const {
+    data: articlesResponse,
+    isLoading: articlesLoading,
+    error: articlesError
+  } = useGetValidatedArticlesQuery({
+    page: currentPage,
+    size: pageSize
   });
 
-  const { 
-    data: categoriesData, 
-    isLoading: categoriesLoading 
+  const {
+    data: categoriesData,
+    isLoading: categoriesLoading
   } = useGetCategoriesQuery();
 
   const articles = articlesResponse?.content || [];
@@ -43,11 +43,11 @@ const LandingPage = () => {
   // Filter articles based on search criteria
   const filteredArticles = articles.filter(article => {
     const matchesCategory = !filters.categoryId || article.categoryId === filters.categoryId;
-    const matchesAuthor = !filters.authorName || 
+    const matchesAuthor = !filters.authorName ||
       `${article.authorFirstName} ${article.authorLastName}`.toLowerCase().includes(filters.authorName.toLowerCase());
     const matchesDateRange = (!filters.startDate || new Date(article.createdAt) >= new Date(filters.startDate)) &&
       (!filters.endDate || new Date(article.createdAt) <= new Date(filters.endDate));
-    
+
     return matchesCategory && matchesAuthor && matchesDateRange;
   });
 
@@ -87,66 +87,67 @@ const LandingPage = () => {
       <Header />
 
       {/* Hero Section */}
-     <section className="bg-gradient-to-r from-primary-100 to-blue-100 py-20 text-center">
-                <div className="max-w-lg mx-auto">
-                    <h1 className="text-3xl font-semibold text-gray-900  lg:text-4xl">
-                        Welcome to IndussPress
-                    </h1>
+      <section className="bg-gradient-to-r from-primary-50 to-blue-50 py-20 text-center">
+        <div className="">
 
-                    <p className="mt-6 text-gray-500 dark:text-gray-900">
-                        Your industrial news management platform    </p>
-                </div>
+          <h1 className="text-5xl font-extrabold text-center lg:text-7xl 2xl:text-8xl">
+            <span className="">Welcome to</span>{' '}
+            <span className="text-blue-700">IndussPress</span>
+          </h1>
 
-                <div className="flex justify-center mt-10">
-                    <div id="default-carousel" className="relative  w-4/6" data-carousel="slide">
-                        {/* Carousel wrapper */}
-                        <div className="relative h-56 overflow-hidden rounded-lg md:h-96 ">
-                            {/* Item 1 */}
-                            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img
-                                    src="https://images.unsplash.com/photo-1647510283846-ed174cc84a78?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="Slide 1"
-                                />
-                            </div>
-                            {/* Item 2 */}
-                            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img
-                                    src="https://images.unsplash.com/photo-1503694978374-8a2fa686963a?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="Slide 2"
-                                />
-                            </div>
-                            {/* Item 3 */}
-                            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img
-                                    src="https://images.unsplash.com/photo-1503694978374-8a2fa686963a?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="Slide 3"
-                                />
-                            </div>
-                            {/* Item 4 */}
-                            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img
-                                    src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?q=80&w=1221&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="Slide 4"
-                                />
-                            </div>
-                            {/* Item 5 */}
-                            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img
-                                    src="https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="Slide 5"
-                                />
-                            </div>
-                        </div>
-                    </div>
+          <p className="mt-6 text-gray-500 dark:text-gray-900 mx-auto max-w-4xl">
+           Discover insightful articles tailored to your interests. Explore a wide range of topics, filter by category or author, and enjoy easy access to validated, high-quality content. Stay informed, curious, and inspired — all in one place.   </p>
+        </div>
+        <div className="flex justify-center mt-10">
+          <div id="default-carousel" className="relative  w-4/6" data-carousel="slide">
+            {/* Carousel wrapper */}
+            <div className="relative h-56 overflow-hidden rounded-lg md:h-96 ">
+              {/* Item 1 */}
+              <div className="hidden duration-700 ease-in-out" data-carousel-item>
+                <img
+                  src="https://images.unsplash.com/photo-1647510283846-ed174cc84a78?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  alt="Slide 1"
+                />
+              </div>
+              {/* Item 2 */}
+              <div className="hidden duration-700 ease-in-out" data-carousel-item>
+                <img
+                  src="https://images.unsplash.com/photo-1503694978374-8a2fa686963a?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  alt="Slide 2"
+                />
+              </div>
+              {/* Item 3 */}
+              <div className="hidden duration-700 ease-in-out" data-carousel-item>
+                <img
+                  src="https://images.unsplash.com/photo-1503694978374-8a2fa686963a?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  alt="Slide 3"
+                />
+              </div>
+              {/* Item 4 */}
+              <div className="hidden duration-700 ease-in-out" data-carousel-item>
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?q=80&w=1221&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  alt="Slide 4"
+                />
+              </div>
+              {/* Item 5 */}
+              <div className="hidden duration-700 ease-in-out" data-carousel-item>
+                <img
+                  src="https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  alt="Slide 5"
+                />
+              </div>
+            </div>
+          </div>
 
-                </div>
+        </div>
 
-            </section>
+      </section>
 
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Filters Section */}
@@ -155,7 +156,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
-              <select 
+              <select
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.categoryId}
                 onChange={(e) => handleFilterChange('categoryId', e.target.value)}
@@ -169,7 +170,7 @@ const LandingPage = () => {
                 ))}
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Auteur</label>
               <input
@@ -180,21 +181,21 @@ const LandingPage = () => {
                 onChange={(e) => handleFilterChange('authorName', e.target.value)}
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Date de début</label>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.startDate}
                 onChange={(e) => handleFilterChange('startDate', e.target.value)}
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Date de fin</label>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.endDate}
                 onChange={(e) => handleFilterChange('endDate', e.target.value)}
@@ -255,8 +256,8 @@ const LandingPage = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredArticles.map((article) => (
-                    <article 
-                      key={article.id} 
+                    <article
+                      key={article.id}
                       className="bg-white rounded-xl shadow-sm border hover:shadow-lg transition-all duration-300 cursor-pointer group"
                       onClick={() => handleArticleClick(article.id)}
                     >
@@ -331,11 +332,10 @@ const LandingPage = () => {
                           <button
                             key={pageNum}
                             onClick={() => handlePageChange(pageNum)}
-                            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                              pageNum === currentPage
+                            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${pageNum === currentPage
                                 ? 'bg-blue-600 text-white'
                                 : 'text-gray-700 hover:bg-gray-100 border border-gray-300'
-                            }`}
+                              }`}
                           >
                             {pageNum + 1}
                           </button>
